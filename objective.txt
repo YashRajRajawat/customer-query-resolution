@@ -1,0 +1,32 @@
+Project - Customer query resolution
+
+Two users- 
+1. End users
+2. Admin users
+
+    End users flow - 
+
+    1. raise query through a form - Ticket number(auto assign), Name, Contact, Email, Query
+    2. send the query to database on submit and send confirmation mail to the user with the ticket number
+
+    Admin flow - 
+
+    1. Login window with simple mail login and register button
+    2. when logged in a simple table existing with assigned tickets to the Admin
+    3. Click on ticket, write solution and submit, sending the solution to the user mail
+
+
+Database Schemas - 
+
+Customers - Name, Email, Contact
+
+Query Table - Ticket number, query, email
+
+Admins - Name, Emaiil, Contact, Pass
+    pass - JWT token sent on mail for login
+
+query assignment - Admin name, Ticket number
+
+Ticket Status - ticket number, status
+
+
