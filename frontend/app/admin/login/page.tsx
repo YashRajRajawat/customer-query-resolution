@@ -1,9 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import { useState } from "react";
 
 export default function Login() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -16,6 +20,38 @@ export default function Login() {
     });
   };
 
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+     try {
+      const res = await fetch("http://localhost:8080/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (res.status === 400) {
+        const data = await res.text();
+        alert(data);
+        return;
+      }
+
+      if (res.ok) {
+        alert("Login successful!");
+        // store login state
+        localStorage.setItem("isAdminLoggedIn", "true");
+        router.push("/admin/dashboard");
+      } else {
+        alert("Error submitting details");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
@@ -24,7 +60,7 @@ export default function Login() {
           Admin Login
         </h2>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

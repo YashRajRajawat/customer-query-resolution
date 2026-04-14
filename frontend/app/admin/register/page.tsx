@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
+import { redirect } from "next/navigation";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -19,8 +20,13 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = async (e: any) => {  
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
 
      try {
       const res = await fetch("http://localhost:8080/api/admin/register", {
@@ -30,6 +36,12 @@ export default function Register() {
         },
         body: JSON.stringify(formData)
       });
+
+      if (res.status === 400) {
+        const data = await res.text();
+        alert(data);
+        return;
+      }
 
       if (res.ok) {
         alert("Registration successful! Please log in.");

@@ -1,5 +1,9 @@
 package com.query.backend.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +22,9 @@ public class Admins {
     private String password;
 
     private String contact;
+
+    @CreationTimestamp
+    private LocalDateTime created_at;
 
     // Getters and Setters
 
@@ -59,5 +66,13 @@ public class Admins {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
     }
 }

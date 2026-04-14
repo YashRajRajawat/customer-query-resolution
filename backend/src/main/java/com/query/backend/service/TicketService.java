@@ -22,13 +22,15 @@ public class TicketService {
     }
 
     public String createTicket(QueryRequest request) {
-
-        Customers customer = new Customers();
-        customer.setName(request.getName());
-        customer.setEmail(request.getEmail());
-        customer.setContact(request.getContact());
-                                        
-        customerRepository.save(customer);
+        Customers customer = customerRepository
+            .findByEmail(request.getEmail())
+            .orElseGet(() -> {
+                Customers newCustomer = new Customers();
+                newCustomer.setName(request.getName());
+                newCustomer.setEmail(request.getEmail());
+                newCustomer.setContact(request.getContact());
+                return customerRepository.save(newCustomer);
+            });
 
         Tickets ticket = new Tickets();
         ticket.setQuery(request.getQuery());
@@ -43,7 +45,7 @@ public class TicketService {
         String ticket_id = "TCK-" + date + "-" +
                 String.format("%04d", savedTicket.getId());
         
-        savedTicket.setTicket_id(ticket_id);
+        savedTicket.setTicketId(ticket_id);
 
         ticketRepository.save(savedTicket);
 

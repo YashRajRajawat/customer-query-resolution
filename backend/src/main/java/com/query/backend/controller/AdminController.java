@@ -1,14 +1,15 @@
 package com.query.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.query.backend.entity.Admins;
-import com.query.backend.repository.AdminRepository;
-import com.query.backend.repository.TicketRepository;
+import com.query.backend.dto.LoginRequest;
+import com.query.backend.dto.RegistrationRequest;
+import com.query.backend.service.AdminService;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -17,19 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 @CrossOrigin("*")
 public class AdminController {
 
-    @Autowired
-    private AdminRepository adminRepository;
+    private final AdminService adminService;
+
+    AdminController(AdminService adminService) {
+        this.adminService = adminService;
+    }
 
     @PostMapping("/register")
-    public String register(@RequestBody Admins admins) {
-        adminRepository.save(admins);
-        return "Admin registered successfully";
+    public ResponseEntity<String> handleRegister(@RequestBody RegistrationRequest request) {
+        return adminService.register(request);
     }
     
     @PostMapping("/login")
-    public String login(@RequestBody Admins admins) {
-        //TODO: process POST request
-        return "Admin login successful";
+    public ResponseEntity<String> handleLogin(@RequestBody LoginRequest request) {
+        return adminService.login(request);
     }
     
 }

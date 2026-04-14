@@ -1,5 +1,10 @@
 package com.query.backend.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,15 +15,20 @@ public class Tickets {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ticket_id;
+    @Column(name = "ticket_id")
+    private String ticketId;
 
     private String query;
 
     @Enumerated(EnumType.STRING)
+    @ColumnDefault("'OPEN'")
     private TicketStatus status;
     
     @ManyToOne
     private Customers customer;
+
+    @CreationTimestamp
+    private LocalDateTime created_at;
 
     // Getters and Setters
     public Long getId() {
@@ -45,12 +55,12 @@ public class Tickets {
         this.customer = customer;
     }
 
-    public String getTicket_id() {
-        return ticket_id;
+    public String getTicketId() {
+        return ticketId;
     }
 
-    public void setTicket_id(String ticket_id) {
-        this.ticket_id = ticket_id;
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
     }
 
     public TicketStatus getStatus() {
@@ -59,5 +69,13 @@ public class Tickets {
 
     public void setStatus(TicketStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
     }
 }
